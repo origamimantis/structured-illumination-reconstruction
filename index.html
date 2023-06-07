@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- boilerplated from https://socket.io/get-started/chat -->
+<html>
+  <head>
+    <title>EZ3D</title>
+		<link rel="icon" href="../favicon.ico">
+		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://unpkg.com/three@0.153.0/build/three.module.js",
+					"three/addons/": "https://unpkg.com/three@0.153.0/examples/jsm/"
+				}
+			}
+		</script>
+
+		<script type="module" src="./main.js"></script>
+  </head>
+  <body>
+		<h2 style="margin-bottom: 1px;" >Structured Light 3D Reconstruction</h2>
+		<span> as implemented by the kid named Eric Zhang</span>
+		<div style="width: 100%; margin-bottom: 10px; text-align: center" id="buttons">
+			<button disabled="true" id="loadcouple">Load Couple</button>
+			<button disabled="true" id="loadcroc">Load Croc</button>
+			<button disabled="true" id="loadmanny">Load Manny</button>
+			<button disabled="true" id="loadteapot">Load Teapot</button>
+			<br>
+		</div>
+		<div style="color: white; margin-left: 5px; margin-top: 5px; position:absolute;" id="threehint"></div>
+		<div style="width: 100%; margin-bottom: 10px; text-align: center" id="buttons">
+		<div style="cursor: pointer; width: 680px; float: left;" id="threedom">
+		</div>
+		<div style="width: 10px; height: 10px; float: left" id="space">
+		</div>
+		<div style="width: 680px; height: 680px; float: left" id="giffer">
+			<img id="thegif" style="width: 100%;" src="">
+		</div>
+		<div style="width: 10px; height: 10px; float: left" id="space2">
+		</div>
+		<div style="width: 680px; height: 680px; float: left" id="baseimg">
+			<img id="theimg" style="width: 100%;" src="">
+		</div>
+		<div style="float: left; margin-top: 10px; text-align: left" id="summary">
+		These are 3D models reconstructed from images using a technique called structured light. This is a fairly After calibrating a pair of cameras, numerous light/shadow patterns are projected onto the object. Due to the object's depth each camera will see a slightly different pattern. If enough pictures are taken with different patterns, it is possible the construct a point cloud corresponding to vertices on the object. After cleaning up the background, and triangulating the point cloud, the object's color can be lifted off an unlit image by projection. This creates a mesh of one side of the object. Repeat this with a few different angles and the full object can be reconstructed.
+		</div>
+  </body>
+</html>
