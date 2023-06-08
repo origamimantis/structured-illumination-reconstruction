@@ -63,6 +63,9 @@ let controls = new TrackballControls(camera, renderer.domElement)
 let loader = new GLTFLoader()
 let canchange = true;
 
+// cache loaded meshes
+let meshes = {};
+
 function setMesh(filename, cameradist=25)
 {
   // "mutex"
@@ -86,7 +89,24 @@ function setMesh(filename, cameradist=25)
   document.getElementById("theimg").src = "assets/"+filename+".png"
   document.getElementById("thegif").src = "assets/"+filename+".gif"
 
-  loader.load(
+  let reset_state = () =>
+  {
+    renderer.setClearColor( 0x414243, 1 );
+
+    controls.reset();
+    camera.position.z = cameradist;
+    document.getElementById("threehint").innerHTML = "Drag to look around:";
+
+    document.getElementById("loadmanny").disabled = false;
+    document.getElementById("loadcroc").disabled = false;
+    document.getElementById("loadcouple").disabled = false;
+    document.getElementById("loadteapot").disabled = false;
+    canchange = true;
+  }
+
+  if (meshes[filename] === undefined)
+  {
+    loader.load(
       "models/"+filename+".gltf",
       (gltf) => {
 
@@ -102,17 +122,8 @@ function setMesh(filename, cameradist=25)
 	gltf.scene.rotation.y = Math.PI;
 
 	scene.add(gltf.scene);
-	renderer.setClearColor( 0x414243, 1 );
-
-	controls.reset();
-	camera.position.z = cameradist;
-	document.getElementById("threehint").innerHTML = "Drag to look around:";
-
-	document.getElementById("loadmanny").disabled = false;
-	document.getElementById("loadcroc").disabled = false;
-	document.getElementById("loadcouple").disabled = false;
-	document.getElementById("loadteapot").disabled = false;
-	canchange = true;
+	meshes[filename] = gltf.scene;
+	reset_state();
       },
       (xhr) => {
 	  if (xhr.loaded == xhr.total)
@@ -121,7 +132,13 @@ function setMesh(filename, cameradist=25)
       (error) => {
 	  console.log(error)
       }
-  )
+    )
+  }
+  else
+  {
+    scene.add(meshes[filename]);
+    reset_state();
+  }
 }
 // "dev mode"
 console.big = (s) => {setMesh(s)}
